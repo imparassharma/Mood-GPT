@@ -252,6 +252,7 @@ END OF SYSTEM RULES.
     };
   }
 
+    try{
     const result = await app.invoke(payload, {
       configurable: { thread_id: sessionId, system_prompt: systemMessage },
     });
@@ -259,5 +260,8 @@ END OF SYSTEM RULES.
     result.messages[result.messages.length - 1].content);
     
     return final_result;
+    }catch(error){
+      return "I'm sorry, I couldn't process that request. Please try again";
+    }
 
 }
