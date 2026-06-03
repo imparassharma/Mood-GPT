@@ -256,6 +256,7 @@ END OF SYSTEM RULES.
     const result = await app.invoke(payload, {
       configurable: { thread_id: sessionId, system_prompt: systemMessage },
     });
+    return result
   } catch (error) {
     console.log(error);
     return "I'm sorry, I couldn't process that request. Please try again.";
