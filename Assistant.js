@@ -252,19 +252,12 @@ END OF SYSTEM RULES.
     };
   }
 
-  try {
     const result = await app.invoke(payload, {
       configurable: { thread_id: sessionId, system_prompt: systemMessage },
     });
-    return result
-  } catch (error) {
-    console.log(error);
-    return "I'm sorry, I couldn't process that request. Please try again.";
-  }
+    const final_result = cleanText(
+    result.messages[result.messages.length - 1].content);
+    
+    return final_result;
 
-  const final_result = cleanText(
-    result.messages[result.messages.length - 1].content,
-  );
-
-  return final_result;
 }
