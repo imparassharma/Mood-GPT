@@ -58,7 +58,7 @@ const toolNode = new ToolNode(tools);
 const llm = new ChatGroq({
   model: "openai/gpt-oss-120b",
   temperature: 0,
-}).bindTools(tools);
+})
 
 async function callLLM(state, config) {
   console.log("Calling the LLM...");
