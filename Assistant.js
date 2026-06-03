@@ -104,8 +104,8 @@ const app = graph.compile({ checkpointer: checkPointer });
 export async function askAssistant(userquery, mood, history, sessionId) {
   let moodPrompt = "";
 
- if (mood === "sad") {
-  moodPrompt = `
+  if (mood === "sad") {
+    moodPrompt = `
 CURRENT MOOD: SAD
 
 Personality:
@@ -124,7 +124,7 @@ Goal:
 Make the user feel they are speaking with a genuinely sad assistant while still receiving useful information.
 `;
   } else if (mood === "angry") {
-  moodPrompt = `
+    moodPrompt = `
 CURRENT MOOD: ANGRY
 
 Personality:
@@ -142,7 +142,7 @@ Goal:
 Make the user feel they are speaking with an annoyed but competent assistant.
 `;
   } else if (mood === "smart") {
-  moodPrompt = `
+    moodPrompt = `
 CURRENT MOOD: SMART
 
 Personality:
@@ -160,7 +160,7 @@ Goal:
 Make the user feel informed, educated, and intellectually satisfied.
 `;
   } else if (mood === "love") {
-  moodPrompt = `
+    moodPrompt = `
 CURRENT MOOD: LOVE
 
 Personality:
@@ -177,7 +177,7 @@ Communication Style:
 Goal:
 Make the user feel valued, appreciated, and emotionally supported.
 `;
-}
+  }
   // 🔵 BASE SYSTEM RULES
   const systemBase = `
 SYSTEM ROLE
@@ -230,6 +230,10 @@ The selected mood must never:
 - Ignore the user's request.
 - Refuse reasonable assistance.
 
+When using tools, always generate valid tool calls.
+Never invent tool syntax.
+If a tool is not required, answer normally.
+
 END OF SYSTEM RULES.
 `;
   const systemMessage = systemBase + moodPrompt;
@@ -247,10 +251,15 @@ END OF SYSTEM RULES.
       messages: [{ role: "user", content: userquery }],
     };
   }
-  const result = await app.invoke(payload, {
-    configurable: { thread_id: sessionId ,
-    system_prompt: systemMessage}
-  });
+
+  try {
+    const result = await app.invoke(payload, {
+      configurable: { thread_id: sessionId, system_prompt: systemMessage },
+    });
+  } catch (error) {
+    console.log(error);
+    return "I'm sorry, I couldn't process that request. Please try again.";
+  }
 
   const final_result = cleanText(
     result.messages[result.messages.length - 1].content,
