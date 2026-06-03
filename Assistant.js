@@ -62,8 +62,7 @@ const llm = new ChatGroq({
 
 async function callLLM(state, config) {
   console.log("Calling the LLM...");
-console.log("Tool Calls:", response.tool_calls);
-console.log("Content:", response.content);
+
   const systemPrompt =
     config?.configurable?.system_prompt || "You are a helpful assistant.";
 
@@ -74,6 +73,8 @@ console.log("Content:", response.content);
   ];
 
   const response = await llm.invoke(payload);
+  console.log("Tool Calls:", response.tool_calls);
+console.log("Content:", response.content);
   return { messages: [response] };
 }
 
