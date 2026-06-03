@@ -14,7 +14,7 @@ app.post("/chat", async (req, res) => {
     const reply = await askAssistant(message, mood, history, sessionId);
     res.json({ reply });
   } catch (error) {
-    res.status(500).json({ error: "Assistant failed" });
+    res.status(500).json({ error: error.message});
   }
 });
 
