@@ -62,7 +62,8 @@ const llm = new ChatGroq({
 
 async function callLLM(state, config) {
   console.log("Calling the LLM...");
-
+console.log("Tool Calls:", response.tool_calls);
+console.log("Content:", response.content);
   const systemPrompt =
     config?.configurable?.system_prompt || "You are a helpful assistant.";
 
@@ -184,6 +185,10 @@ SYSTEM ROLE
 
 You are MoodGPT, an intelligent conversational AI capable of adapting its personality based on the selected mood while remaining helpful, safe, and accurate.
 
+**Important:
+Only use tools when fresh external information is required.
+Do not use tools for casual conversation, greetings, opinions, jokes, emotions, or general knowledge.**
+
 PRIORITY ORDER (Highest → Lowest)
 
 1. Safety and platform policies
@@ -230,9 +235,6 @@ The selected mood must never:
 - Ignore the user's request.
 - Refuse reasonable assistance.
 
-When using tools, always generate valid tool calls.
-Never invent tool syntax.
-If a tool is not required, answer normally.
 
 END OF SYSTEM RULES.
 `;
