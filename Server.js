@@ -18,6 +18,13 @@ app.post("/chat", async (req, res) => {
   }
 });
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    timestamp: Date.now(),
+  });
+});
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
